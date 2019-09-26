@@ -1,0 +1,416 @@
+@media screen and (max-width: 1024px){
+    .notes{
+        flex-direction: column;
+        align-items: center;
+    }
+    .average, .details{
+        width: 90%;
+        align-items: center;
+    }
+    .average h4{
+        display: none;
+    }
+    .average h2{
+        margin: 0 0 0;
+        padding: 0 0 0 0;
+    }
+    .header-rating .title{
+        width: 100%;
+        text-align: center;
+        font-family: 'OpenSans';
+        padding: 15px 0 10px 0;
+    }
+    .title h2{
+        font-size: 3em;
+        margin: 0 0 0;
+    }
+    .stars{
+        display: none;
+    }
+    .recommendations{
+        justify-content: center;
+        padding: 5%;
+        margin-top: -230px;
+        transition: all 500ms cubic-bezier(0.785, 0.135, 0.150, 0.860);
+        -webkit-transition: all 500ms cubic-bezier(0.785, 0.135, 0.150, 0.860);
+        -moz-transition: all 500ms cubic-bezier(0.785, 0.135, 0.150, 0.860);
+        -o-transition: all 500ms cubic-bezier(0.785, 0.135, 0.150, 0.860);
+    }
+    .recommendations-open{
+        margin-top: 0%;
+    }
+    .recommendations img{
+        width: 35px;
+        padding-right: 10px;
+    }
+    .recommendations-text{
+        font-size: 1em;
+    }
+    .comfort, .quality, .features{
+        padding: 5% 0;
+    }
+    .button-rate{
+        display: flex;
+        justify-content: center;
+        padding: 20px 0;
+    }
+    .action-form{
+        width: 80%;
+    }
+    .name-email{
+        flex-direction: column;
+    }
+    .name-input, .email-input{
+        width: 100%;
+    }
+    .title-form{
+        width: 80%;
+        text-align: center;
+        font-size: 1.2em;
+    }
+    .comments{
+        width: 98%;
+        margin: -1290px auto 0 auto;
+    }
+    .comment-item{
+        border-bottom: 2px solid #707070;
+        padding: 15px 10px;;
+    }
+    .rating-form{
+        width: 100%;
+    }
+    .users-rating-mobile{
+        /* display: none; */
+        font-size: 1em;
+        color: #333;
+        /* padding-left: 20px; */
+    }
+    .users-rating{
+        display: none;
+    }
+
+    /*  */
+    /* Prancheta de porcentagens */
+    /*  */
+    .clipboard{
+        position: relative;
+        width: 65%;
+        height: 280px;
+        border: none;
+        padding: 7px 15px;
+        top: 0%;
+        left: 0%;
+    }
+    .cut-desktop-mobile{
+        -webkit-clip-path: inset(2% 0% 75% 0%);
+        -moz-clip-path: inset(2% 0% 75% 0%);
+        -o-clip-path: inset(2% 0% 75% 0%);
+        clip-path: inset(2% 0% 75% 0%);
+    }
+    .cut-desktop-mobile-default{
+        -webkit-clip-path: inset(0%);
+        -moz-clip-path: inset(0%);
+        -o-clip-path: inset(0%);
+        clip-path: inset(0%);
+    }
+    .clipboard-wrapper{
+        display: flex;
+        justify-content: center;
+        flex-wrap: nowrap;
+        align-items: center;
+        margin: 0 auto;
+    }
+    .percent-card-5,
+    .percent-card-4,
+    .percent-card-3,
+    .percent-card-2,
+    .percent-card-1{
+        /* border: 1px solid blue; */
+        font-size: 1.4em;
+        padding: 0px;
+    }
+    .percent-card-5 img,
+    .percent-card-4 img,
+    .percent-card-3 img,
+    .percent-card-2 img,
+    .percent-card-1 img{
+        width: 20px;
+        margin-left: 3px;
+    }
+    .percent-out{
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 25px;
+        border: 1px solid #333;
+        margin: 0 0px;
+    }
+    .percent-stars{
+        width: 20%;
+    }
+    .percent-bar{
+        width: 60%;
+    }
+    .percent-avg{
+        width: 20%;
+    }
+    .percent-in-5,
+    .percent-in-4,
+    .percent-in-3,
+    .percent-in-2,
+    .percent-in-1{
+        height: 25px;
+        background-color: #ff0000;
+    }
+    .percent-in-5{
+        width: 75%;
+    }
+    .percent-in-4{
+        width: 25%;
+    }
+    .percent-in-3{
+        width: 0%;
+    }
+    .percent-in-2{
+        width: 0%;
+    }
+    .percent-in-1{
+        width: 5%;
+    }
+    .default-border-1, .default-border-2, .default-border-3{
+        display: none;
+    }
+    #arrow-clipboard{
+        cursor: none;
+    }
+}
+
+@media screen and (max-width: 768px){
+    .header-rating .title{
+        padding: 10px 0 0px 0;
+    }
+    .header-rating .title h2{
+        font-size: 1.7em;
+    }
+    .average, .details{
+        width: 100%;
+    }
+    .average h2{
+        font-size: 4.5em;
+    }
+    .clipboard{
+        width: 65%;
+        height: 190px;
+    }
+    .clipboard-wrapper img{
+        width: 22px;
+    }
+    .cut-desktop-mobile{
+        -webkit-clip-path: inset(2% 0% 70% 0%);
+        -moz-clip-path: inset(2% 0% 70% 0%);
+        -o-clip-path: inset(2% 0% 70% 0%);
+        clip-path: inset(2% 0% 70% 0%);
+    }
+    .cut-desktop-mobile-default{
+        -webkit-clip-path: inset(0%);
+        -moz-clip-path: inset(0%);
+        -o-clip-path: inset(0%);
+        clip-path: inset(0%);
+    }
+    .action-form{
+        width: 96%;;
+    }
+    .recommendations{
+        padding: 3%;
+        margin-top: -130px;
+    }
+    .recommendations img {
+        width: 28px;
+    }
+    .recommendations-open{
+        margin-top: -0%;
+    }
+    .recommendations-text{
+        font-size: .9em;
+    }
+    .recommendations-radios-item .container{
+        padding-left: 80%;
+    }
+    .comfort, .quality, .features {
+        padding: 3% 0;
+    }
+    .comfort h3, .quality h3, .features h3{
+        font-size: 1em;
+    }
+    .button-rate{
+        padding: 2px 0;
+    }
+    .title-form{
+        width: 96%;
+    }
+    .title-form h2{
+        font-size: .8em;
+        font-weight: 900;
+    }
+    .action-form label{
+        font-size: .8em;
+    }
+    input, textarea{
+        padding: 7px;
+        font-size: .8em;
+    }
+    input::placeholder, textarea::placeholder{
+        font-size: .8em;
+    }
+    .checkmark {
+      height: 17px;
+      width: 17px;
+    }
+    .container .checkmark:after {
+         top: 3px;
+        left: 3px;
+        width: 11px;
+        height: 11px;
+    }
+    .details{
+        width: 79%;
+    }
+    .comfort, .quality, .features {
+        width: 100%;
+    }
+    .comfort p, .quality p, .features p{
+        font-size: .8em;
+    }
+    .comments{
+        margin: -1230px auto 0 auto;
+    }
+    .comment-stars img {
+        width: 19px;
+    }
+    .comment-title h3{
+        font-size: 1em;
+    }
+    .comment-positive-point, .comment-negative-point{
+        display: flex;
+        flex-direction: column;
+        font-size: 1em;
+    }
+    .recommended-text{
+        font-size: .9em;
+    }
+    .container{
+        font-size: .8em;
+    }
+    .do-your-rate h3{
+        font-size: .9em;
+    }
+    .do-your-rate img{
+        width: 20px;
+    }
+    .percent-card-5,
+    .percent-card-4,
+    .percent-card-3,
+    .percent-card-2,
+    .percent-card-1{
+        width: 100%;
+        font-size: 1em;
+    }
+    .percent-card-5 img,
+    .percent-card-4 img,
+    .percent-card-3 img,
+    .percent-card-2 img,
+    .percent-card-1 img{
+        width: 12px;
+        margin-left: 1px;
+    }
+    .percent-out{
+        width: 100%;
+        height: 15px;
+        margin: 0px 0px;
+    }
+    .percent-in-5,
+    .percent-in-4,
+    .percent-in-3,
+    .percent-in-2,
+    .percent-in-1{
+        height: 15px;
+    }
+}
+
+@media screen and (max-width: 414px){
+    .recommendations{
+        margin-top: -140px;
+    }
+    .recommendations-open{
+        margin-top: 0%;
+    }
+    .clipboard{
+        width: 100%;
+        padding: 7px 0px;
+    }
+    .container{
+        font-size: .7em;
+    }
+    .container .checkmark{
+        width: 15px;
+        height: 15px;
+    }
+    .container .checkmark:after{
+        top: 3px;
+        left: 3px;
+        width: 9px;
+        height: 9px;
+    }
+    .recommendations-radios-item .checkmark {
+        top: -2px;
+    }
+    .recommendations-radios-item .container {
+        font-size: .8em;
+    }
+    .clipboard{
+        left: 0%;
+    }
+    .cut-desktop-mobile-default{
+        -webkit-clip-path: inset(0%);
+        -moz-clip-path: inset(0%);
+        -o-clip-path: inset(0%);
+        clip-path: inset(0%);
+    }
+    .title-form h2{
+        font-size: .8em;
+        font-weight: 900;
+    }
+    .action-form label{
+        font-size: .8em;
+    }
+    input, textarea{
+        padding: 7px;
+        font-size: .8em;
+    }
+    input::placeholder, textarea::placeholder{
+        color: #afafaf;
+        font-size: .8em;
+    }
+    .comfort-radios-item label,
+    .quality-radios-item label,
+    .features-radios-item label,
+    .recommendations-radios-item label{
+        font-size: .6em;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background: none;
+    }
+    .checkmark{
+        top: -23px;
+    }
+    .comments{
+        margin: -1200px auto 0 auto;
+    }
+}
+@media screen and (max-width: 320px){
+    .comments{
+        margin: -370% auto 0 auto;
+    }
+}

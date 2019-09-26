@@ -1,0 +1,35 @@
+@media screen and (max-width: 1440px){
+    .notes{
+        width: 90%;
+    }
+    .average, .details{
+        width: 35%;
+        /* border: 1px solid red; */
+    }
+    .action-form{
+        width: 100%;;
+    }
+    .comments{
+        width: 85%;
+        margin: -1300px auto 0 auto;
+    }
+    .rating-form{
+        width: 70%;
+    }
+}
+@media screen and (max-width: 1366px){
+    .notes{
+        width: 95%;
+    }
+    .average, .details{
+        width: 45%;
+        /* border: 1px solid red; */
+    }
+    .action-form{
+        width: 100%;;
+    }
+    .comments{
+        width: 90%;
+        margin: -1220px auto 0 auto;
+    }
+}
