@@ -42,6 +42,7 @@ function dt3MakeApiCall( endpoint ) {
                 console.log( data );
                 // Incializa o total de avaliações
                 const total_interno = parseInt( document.querySelector('.total-avaliations').innerText );
+                let ex_new_average = dt3ExAverage( data.rating_average, data.paging.total );
                 var results = document.createElement('div');
                 var relevantData = '<ul>';
                 relevantData = relevantData + '<li>Total: '   + data.paging.total;
@@ -53,12 +54,13 @@ function dt3MakeApiCall( endpoint ) {
                 relevantData = relevantData + '<li>Three Star: '  + data.rating_levels.three_star;
                 relevantData = relevantData + '<li>Two Star: '    + data.rating_levels.two_star;
                 relevantData = relevantData + '<li>One Star: '    + data.rating_levels.one_star;
-                relevantData = relevantData + '<li>Nova média: '  + dt3ExAverage( data.rating_average, data.paging.total );
+                relevantData = relevantData + '<li>Nova média: '  + ex_new_average;
                 relevantData = relevantData + '<li>Estrela 5: '  + dt3ExStar( data.paging.total, data.rating_levels.five_star, 5, total_interno );
                 relevantData = relevantData + '<li>Estrela 4: '  + dt3ExStar( data.paging.total, data.rating_levels.four_star, 4, total_interno );
                 relevantData = relevantData + '<li>Estrela 3: '  + dt3ExStar( data.paging.total, data.rating_levels.three_star, 3, total_interno );
                 relevantData = relevantData + '<li>Estrela 2: '  + dt3ExStar( data.paging.total, data.rating_levels.two_star, 2, total_interno );
                 relevantData = relevantData + '<li>Estrela 1: '  + dt3ExStar( data.paging.total, data.rating_levels.one_star, 1, total_interno );
+                dt3RedrawStars ( ex_new_average );
                 relevantData = relevantData + '</ul> ';
                 // document.getElementById('header-rating').innerHTML = relevantData;
                 document.querySelector('.title').innerHTML = relevantData;
@@ -131,8 +133,47 @@ function dt3ExStar( extotal, exstar, star, total ) {
 
 }
 
-
 // Redesenha as estrelas
+// Recebe a nova média e 
+// Exibe a quantidade de estrelas correspondente
+/*
+<div class="clipboard-wrapper">
+    <img src="https://localhost/dt3/wp-content/plugins/dt3-rating/images/red-star.svg'" alt="">
+    <img src="https://localhost/dt3/wp-content/plugins/dt3-rating/images/red-star.svg'" alt="">
+    <img src="https://localhost/dt3/wp-content/plugins/dt3-rating/images/red-star.svg'" alt="">
+    <img src="https://localhost/dt3/wp-content/plugins/dt3-rating/images/white-star.svg'" alt="">
+    <img src="https://localhost/dt3/wp-content/plugins/dt3-rating/images/white-star.svg'" alt="">                           
+</div>
+
+// Percorre os imgs e troca apenas os nomes dos arquivos
+// document.querySelector( '.clipboard-wrapper>img:nth-child(5)' );
+
+*/
+function dt3RedrawStars ( new_average ) {
+
+    let url = document.querySelector( '.clipboard-wrapper>img' ).src;
+    let url_array = url.split( '/' );
+    url = url_array.slice( 0, url_array.length - 1 );
+    url = url.join( '/' );
+
+    console.log ( 'URL das estrelas: ' + url );
+
+    let n = 1;
+  
+    while ( n <= 5 ) {
+        if ( n <= new_average ) {
+            console.log( url + '/red-star.svg' );
+            document.querySelector( '.clipboard-wrapper>img:nth-child('+ n +')' ).src = url + '/red-star.svg';
+        } else {
+            console.log( url + '/white-star.svg' );
+            document.querySelector( '.clipboard-wrapper>img:nth-child('+ n +')' ).src = url + '/white-star.svg';
+        }
+        n++;
+    }
+}
+
+// Classe:
+// 'recomendation-number'
 
 // Redesenhas as porcentagens - OK
 // dt3PercentBar();
