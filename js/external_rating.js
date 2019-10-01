@@ -32,51 +32,6 @@
  *  TODO:
  *  Paginar com base na API
  */
-    function makeApiCall() {
-      // const PRODUCT_ENDPOINT = 'https://api.mercadolibre.com/reviews/item/MLB1080602222';
-        fetch(PRODUCT_ENDPOINT).then( function(response){
-            response.json().then( 
-              function(data){
-                console.log(data);
-                var results = document.createElement('div');
-                var relevantData = '<ul>';
-               relevantData = relevantData + '<li>Total: '   + data.paging.total;
-                relevantData = relevantData + '<li>Pagina: '   + data.paging.offset;
-                var allReviews = data.reviews;
-                var nReviews = allReviews.length;
-                
-                relevantData = relevantData + '<li>Numero de reviews : '   + nReviews;
-                i = 0;
-                
-                for ( i == 0; i < nReviews; i++  ){ 
-                  console.log('Review'); 
-                 relevantData = relevantData + '<li>ID: '   + data.reviews[i].id;
-                  relevantData = relevantData + '<li>Title: '   + data.reviews[i].title;
-                  relevantData = relevantData + '<li>Content: ' + data.reviews[i].content;
-                  relevantData = relevantData + '<li>Rate: '    + data.reviews[i].rate;
-                }
-                relevantData = relevantData + '<li>Average: ' + data.rating_average;
-                relevantData = relevantData + '<li>Levels: ';
-                relevantData = relevantData + '<li>One Star: '    + data.rating_levels.one_star;
-                relevantData = relevantData + '<li>Two Star: '    + data.rating_levels.two_star;
-                relevantData = relevantData + '<li>Three Star: '  + data.rating_levels.three_star;
-                relevantData = relevantData + '<li>Four Star: '   + data.rating_levels.four_star;
-                relevantData = relevantData + '<li>Five Star: '   + data.rating_levels.five_star;
-                relevantData = relevantData + '</ul>: ';
-                // var text = document.createTextNode( relevantData );
-            // results.appendChild( text );
-            // document.getElementById( 'results' ).appendChild( results );
-            // document.getElementById('results').innerHTML = '<ol><li>oi<li>oi</ol>';
-            document.getElementById('results').innerHTML = relevantData;
-                });
-            }).catch(
-              function(err){
-              console.error('Failed retrieving information', err);
-          });
-          
-    }
-
-  // makeApiCall();
 
 // Executa uma chamada de API e retorna um objeto JSON
 
@@ -85,6 +40,8 @@ function dt3MakeApiCall( endpoint ) {
         response.json().then(
             function( data ) {
                 console.log( data );
+                // Incializa o total de avaliações
+                const total_interno = parseInt( document.querySelector('.total-avaliations').innerText );
                 var results = document.createElement('div');
                 var relevantData = '<ul>';
                 relevantData = relevantData + '<li>Total: '   + data.paging.total;
@@ -97,9 +54,16 @@ function dt3MakeApiCall( endpoint ) {
                 relevantData = relevantData + '<li>Two Star: '    + data.rating_levels.two_star;
                 relevantData = relevantData + '<li>One Star: '    + data.rating_levels.one_star;
                 relevantData = relevantData + '<li>Nova média: '  + dt3ExAverage( data.rating_average, data.paging.total );
+                relevantData = relevantData + '<li>Estrela 5: '  + dt3ExStar( data.paging.total, data.rating_levels.five_star, 5, total_interno );
+                relevantData = relevantData + '<li>Estrela 4: '  + dt3ExStar( data.paging.total, data.rating_levels.four_star, 4, total_interno );
+                relevantData = relevantData + '<li>Estrela 3: '  + dt3ExStar( data.paging.total, data.rating_levels.three_star, 3, total_interno );
+                relevantData = relevantData + '<li>Estrela 2: '  + dt3ExStar( data.paging.total, data.rating_levels.two_star, 2, total_interno );
+                relevantData = relevantData + '<li>Estrela 1: '  + dt3ExStar( data.paging.total, data.rating_levels.one_star, 1, total_interno );
                 relevantData = relevantData + '</ul> ';
                 // document.getElementById('header-rating').innerHTML = relevantData;
                 document.querySelector('.title').innerHTML = relevantData;
+                // Função herdado do index.js para recalcular as barras 
+                dt3PercentBar();
             });
     }).catch(
         function(err) {
@@ -118,7 +82,7 @@ function dt3ExAverage( exaverage, extotal ) {
     let average = parseFloat( document.querySelector('.average-number').innerText );
     let total = parseFloat( document.querySelector('.total-avaliations').innerText );
 
-    var new_total = dt3ExSum( extotal, total );
+    var new_total = dt3ExSum( extotal );
     var new_average;
 
     // A nova média é igual média ponderada das médias interna e externa
@@ -127,6 +91,9 @@ function dt3ExAverage( exaverage, extotal ) {
 
     // Arredonda para 1 casa decimal
     new_average = new_average.toFixed(1);
+    
+    // Exibe o novo total
+    document.querySelector('.total-avaliations').innerText = String( new_total );
 
     // Exibe a nova média
     document.querySelector('.average-number').innerText = String( new_average );
@@ -137,22 +104,38 @@ function dt3ExAverage( exaverage, extotal ) {
 }
 
 // Recebe o Objeto JSON e recalcula o total de avaliações
-function dt3ExSum( extotal, total ) {
+function dt3ExSum( extotal ) {
 
+    let total = parseFloat( document.querySelector('.total-avaliations').innerText );
     var new_total = extotal + total;
-    
-    // Exibe o novo total
-    document.querySelector('.total-avaliations').innerText = String( new_total );
-    
+
     return new_total;
 
 }
 
-// Recebe os Objeto JSON e recalcula a quantidade de cada estrela
+// Recebe o extotal, a quantidade de cada estrela
+// o numero da estrela e o total de avaliaçoes internas.
+// Recalcula a porcentagem de cada estrela
+// ( star(%) * total + exstar * 100 ) / new_total
+function dt3ExStar( extotal, exstar, star, total ) {
+
+    let perc_star = parseInt( document.querySelector('.percent-card-'+ star +'>div>p.percent-number').innerText );
+    let new_total = parseInt( document.querySelector('.total-avaliations').innerText );
+
+    new_perc_star = ( ( perc_star * total ) + exstar * 100 ) / new_total;
+    new_perc_star = new_perc_star.toFixed();
+
+    document.querySelector('.percent-card-'+ star +'>div>p.percent-number').innerText = String( new_perc_star ) + '%';
+
+    return new_perc_star;
+
+}
+
 
 // Redesenha as estrelas
 
-// Redesenhas as porcentagens
+// Redesenhas as porcentagens - OK
+// dt3PercentBar();
 
 // Adiciona os comentários dos usuários externos
 
