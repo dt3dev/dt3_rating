@@ -60,6 +60,7 @@ function dt3MakeApiCall( endpoint ) {
                 relevantData = relevantData + '<li>Estrela 3: '  + dt3ExStar( data.paging.total, data.rating_levels.three_star, 3, total_interno );
                 relevantData = relevantData + '<li>Estrela 2: '  + dt3ExStar( data.paging.total, data.rating_levels.two_star, 2, total_interno );
                 relevantData = relevantData + '<li>Estrela 1: '  + dt3ExStar( data.paging.total, data.rating_levels.one_star, 1, total_interno );
+                relevantData = relevantData + '<li>Estrela 1: '  + dt3ExRecomendations( data.rating_levels.five_star, data.rating_levels.four_star );
                 dt3RedrawStars ( ex_new_average );
                 relevantData = relevantData + '</ul> ';
                 // document.getElementById('header-rating').innerHTML = relevantData;
@@ -172,8 +173,21 @@ function dt3RedrawStars ( new_average ) {
     }
 }
 
-// Classe:
-// 'recomendation-number'
+// Calcula o novo número de recomendações
+// Pontuações acima de 3 pontos serão consideradas recomendações
+// Exibe o valor na pagina
+// Retorna o total de recomendações
+function dt3ExRecomendations( fivestar, fourstar ) {
+
+    const internal_recomend = parseInt( document.querySelector('.recomendation-number').innerText );
+    let ex_recomend = parseInt ( fivestar + fourstar );
+    let all_recomend = internal_recomend + ex_recomend;
+
+    document.querySelector('.recomendation-number').innerText = String( all_recomend );
+
+    return all_recomend;
+
+}
 
 // Redesenhas as porcentagens - OK
 // dt3PercentBar();
