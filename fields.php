@@ -2,23 +2,10 @@
 
 
 if ( function_exists( "register_field_group" ) ) {
-	/* Campo */
 	register_field_group(array (
 		'id' => 'acf_dt3_rating',
 		'title' => '<h1>Dados da Avaliação</h1>',
 		'fields' => array (
-			/* array (
-				'key' => 'field_4b73da531g8ec',
-				'label' => 'Título',
-				'name' => 'dt3_rating_title',
-				'type' => 'text',
-				'default_value' => '',
-				'placeholder' => '',
-				'prepend' => '',
-				'append' => '',
-				'formatting' => 'html',
-				'maxlength' => '',
-			), */
 			array (
 				'key' => 'field_4b73da531g8f5',
 				'label' => 'ID do Produto',
