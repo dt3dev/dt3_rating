@@ -62,6 +62,7 @@ function dt3MakeApiCall( endpoint ) {
                 relevantData = relevantData + '<li>Estrela 1: '  + dt3ExStar( data.paging.total, data.rating_levels.one_star, 1, total_interno );
                 relevantData = relevantData + '<li>Estrela 1: '  + dt3ExRecomendations( data.rating_levels.five_star, data.rating_levels.four_star );
                 dt3RedrawStars ( ex_new_average );
+                dt3ExReviews( data.reviews, data.paging.offset );
                 relevantData = relevantData + '</ul> ';
                 // document.getElementById('header-rating').innerHTML = relevantData;
                 document.querySelector('.title').innerHTML = relevantData;
@@ -163,15 +164,42 @@ function dt3RedrawStars ( new_average ) {
   
     while ( n <= 5 ) {
         if ( n <= new_average ) {
-            console.log( url + '/red-star.svg' );
+            // console.log( url + '/red-star.svg' );
             document.querySelector( '.clipboard-wrapper>img:nth-child('+ n +')' ).src = url + '/red-star.svg';
         } else {
-            console.log( url + '/white-star.svg' );
+            // console.log( url + '/white-star.svg' );
             document.querySelector( '.clipboard-wrapper>img:nth-child('+ n +')' ).src = url + '/white-star.svg';
         }
         n++;
     }
 }
+
+// Retorna uma string com as estrelas da avaliação
+function dt3DrawStars( rating, url ) {
+
+    let n = 1;
+    let stars_string = '<div class="comment-stars">';
+  
+    while ( n <= 5 ) {
+
+        if ( n <= rating ) {
+            // console.log( url + '/red-star.svg' );
+            stars_string = stars_string + '<img src="' + url   + '/red-star.svg " alt="">';
+        } else {
+            // console.log( url + '/white-star.svg' );
+            stars_string = stars_string + '<img src="' + url   + '/white-star.svg " alt="">';
+        }
+
+        n++;
+    }
+
+    stars_string = stars_string + '</div>';
+
+    return stars_string;
+
+}
+
+
 
 // Calcula o novo número de recomendações
 // Pontuações acima de 3 pontos serão consideradas recomendações
@@ -189,9 +217,104 @@ function dt3ExRecomendations( fivestar, fourstar ) {
 
 }
 
-// Redesenhas as porcentagens - OK
-// dt3PercentBar();
-
 // Adiciona os comentários dos usuários externos
+// Usar appendChild()
+// Recebe o objeto review e o offset
+// Percorre o as opiniões adcionando abaixo dos comentários existentes
+// Dados a serem inseridos
+// Via Mercado Livre
+// Data do comentário
+// Título
+// Conteúdo
 
-// Recalcula os numero de usuários recomendados.
+function dt3ExReviews( reviews, offset ) {
+
+    // Quantidade de reviews
+    let n_reviews = reviews.length;
+    let i = 0;
+    let date;
+    let json_date;
+    let dia, mes, ano;
+    let comment_item;
+    let comment_stars;
+    let comment_title;
+    let comment_user_date;
+    let comment_positive_point;
+    let comment_recomended;
+
+    
+    // Percorre os reviews
+    for( i = 0; i < n_reviews ; i++) {
+        console.log( 'Via Mercado Livre' );
+        // console.log( reviews[i].date_created );
+        // console.log( reviews[i].title );
+        // console.log( reviews[i].content );
+
+        var node = document.createElement("div");
+        var textnode = document.createTextNode("Carregando commentarios externos...");
+        node.appendChild(textnode);  
+        document.getElementsByClassName("comments")[0].appendChild(node); 
+
+        // Elementos do review:
+        // comment-item
+        // comment-stars
+        // comment-title
+        // comment-user-date
+        // comment-positive-point
+        // comment-recomended
+
+        // Formata a data
+        json_date = reviews[i].date_created;
+        date = new Date( json_date );
+        console.log( 'Data do comentário: ' + date );
+        console.log( 'DIA: ' + date.getDate() );
+        console.log( 'MÊS: ' + ( date.getMonth() + 1 )  );
+        console.log( 'ANO: ' + date.getFullYear() );
+
+        dia = date.getDate();
+        mes = ( date.getMonth() + 1 );
+        ano = date.getFullYear();
+
+        comment_item = '<div class="comment-item">';
+        
+        comment_stars = dt3DrawStars( reviews[i].rate, 'https://dt3sports.com.br/wp-content/plugins/dt3-rating/images' );
+
+        comment_title = '<div class="comment-title"> ' +
+                '<h3> ' +
+                    reviews[i].title +
+                '</h3> ' +
+            '</div>';
+
+        comment_user_date = '<div class="comment-user-date">' +
+                '<p><i>via Mercado Livre</i> em ' + dia + '/' + mes + '/' + ano + '</p>' +
+            '</div>';
+        comment_positive_point = ' <div class="comment-positive-point">' +
+                '<p>' +
+                    reviews[i].content +
+                '</p>' +
+            '</div>';
+        comment_recomended = '<div class="comment-recommended">' +
+                '<img src="https://sports.dt3.com.br/wp-content/plugins//dt3-rating/images/circle-with-check-symbol.svg" alt="">' +
+                '<div class="recommended-text">' +
+                    'Recomendaria para um amigo' +
+                '</div>' +
+            '</div>';
+
+        // Montando o comentário completo
+        comment_item = comment_item + comment_stars;
+        comment_item = comment_item + comment_title;
+        comment_item = comment_item + comment_user_date;
+        comment_item = comment_item + comment_positive_point;
+        if ( reviews[i].rate > 3 ) {
+            comment_item = comment_item + comment_recomended;
+        } 
+        comment_item = comment_item + '</div>';
+        
+        /// document.querySelector('.comments>div:last-child').innerHTML= '<div class="comment-item">Esse é um comentario de verdade</div>';
+        document.querySelector('.comments>div:last-child').innerHTML= comment_item;
+
+    }
+
+}
+
+
