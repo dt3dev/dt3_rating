@@ -29,11 +29,11 @@ $partial_loop = new WP_Query( array(
 // Contadas a partir do data-load
 ?>
 
-	<link rel="stylesheet" href="<?php echo PLUGIN_URL; ?>dt3-rating/css/reset.css">
+    <link rel="stylesheet" href="<?php echo PLUGIN_URL; ?>dt3-rating/css/reset.css">
     <link rel="stylesheet" href="<?php echo PLUGIN_URL; ?>dt3-rating/css/style.css">
     <link rel="stylesheet" href="<?php echo PLUGIN_URL; ?>dt3-rating/css/media-queries-desktop.css">
     <link rel="stylesheet" href="<?php echo PLUGIN_URL; ?>dt3-rating/css/media-queries-mobile.css">
-	<main>
+    <main>
         <section class="header-rating" id="header-rating">
             <div class="title"><h2>Avaliações</h2></div>
             <div class="notes">
@@ -41,9 +41,11 @@ $partial_loop = new WP_Query( array(
                     <h4>Média de avaliações</h4>
                     <!-- <h2>4.5</h2> -->
                     <h2>
-                    <?php $stars_average = dt3_rating_stars_average( $loop, $product_post_id ); ?>
-                    <?php settype($stars_average, "double"); ?>
-                    <?php echo sprintf("%2.1f", $stars_average); ?>
+                        <span class="average-number">
+                            <?php $stars_average = dt3_rating_stars_average( $loop, $product_post_id ); ?>
+                            <?php settype($stars_average, "double"); ?>
+                            <?php echo sprintf("%2.1f", $stars_average); ?>
+                        </span>
                     </h2>
                     <div class="stars">
                         <img src="<?php echo PLUGIN_URL; ?>dt3-rating/images/rate-star-button.svg" alt="">
@@ -64,10 +66,12 @@ $partial_loop = new WP_Query( array(
                         <div class="users-rating-mobile">
                             <!-- <p>(23 avaliacoes)</p> -->
                             <p>(
-                                <?php
-                                    $dt3_rating_total = dt3_rating_total( $loop, $product_post_id );
-                                    echo esc_html( $dt3_rating_total ) ;
-                                ?>
+                                <span class="total-avaliations">
+                                    <?php
+                                        $dt3_rating_total = dt3_rating_total( $loop, $product_post_id );
+                                        echo esc_html( $dt3_rating_total ) ;
+                                    ?>
+                                </span>
                                 <?php 
                                     echo 1 == $dt3_rating_total ? 'avaliação' : 'avaliações';
                                 ?>
@@ -86,7 +90,9 @@ $partial_loop = new WP_Query( array(
                             <div class="percent-avg">
                                 <p class="percent-number">
                                 <?php
-                                    echo dt3_rating_percent( 5, $loop, $product_post_id );
+                                    $percent_number = dt3_rating_percent( 5, $loop, $product_post_id );
+                                    $percent_number = $percent_number == 0 ? '0' : $percent_number;
+                                    echo strval( $percent_number );
                                 ?>
                                 </p>
                             </div>
@@ -104,7 +110,9 @@ $partial_loop = new WP_Query( array(
                             <div class="percent-avg" style="">
                                 <p class="percent-number">
                                 <?php
-                                    echo dt3_rating_percent( 4, $loop, $product_post_id );
+                                    $percent_number = dt3_rating_percent( 4, $loop, $product_post_id );
+                                    $percent_number = $percent_number == 0 ? '0' : $percent_number;
+                                    echo strval( $percent_number );
                                 ?>
                                 </p>
                             </div>
@@ -122,7 +130,9 @@ $partial_loop = new WP_Query( array(
                             <div class="percent-avg">
                                 <p class="percent-number">
                                 <?php
-                                    echo dt3_rating_percent( 3, $loop, $product_post_id );
+                                    $percent_number = dt3_rating_percent( 3, $loop, $product_post_id );
+                                    $percent_number = $percent_number == 0 ? '0' : $percent_number;
+                                    echo strval( $percent_number );
                                 ?>
                                 </p>
                             </div>
@@ -140,7 +150,9 @@ $partial_loop = new WP_Query( array(
                             <div class="percent-avg">
                                 <p class="percent-number">
                                 <?php
-                                    echo dt3_rating_percent( 2, $loop, $product_post_id );
+                                    $percent_number = dt3_rating_percent( 2, $loop, $product_post_id );
+                                    $percent_number = $percent_number == 0 ? '0' : $percent_number;
+                                    echo strval( $percent_number );
                                 ?>
                                 </p>
                             </div>
@@ -158,7 +170,9 @@ $partial_loop = new WP_Query( array(
                             <div class="percent-avg">
                                 <p class="percent-number">
                                 <?php
-                                    echo dt3_rating_percent( 1, $loop, $product_post_id );
+                                    $percent_number = dt3_rating_percent( 1, $loop, $product_post_id );
+                                    $percent_number = $percent_number == 0 ? '0' : $percent_number;
+                                    echo strval( $percent_number );
                                 ?>
                                 </p>
                             </div>
@@ -167,9 +181,14 @@ $partial_loop = new WP_Query( array(
                     <div class="users-rating">
                         <!-- <p>(23 avaliacoes)</p> -->
                         <p>(
+                            <span class="total-avaliations">
                             <?php
-                                echo dt3_rating_total( $loop, $product_post_id );
+                                // Passar para string
+                                // var_dump( dt3_rating_total( $loop, $product_post_id ) );
+                                echo strval( dt3_rating_total( $loop, $product_post_id ) );
+                                //  == 0 ? '0' : dt3_rating_total( $loop, $product_post_id ) );
                             ?>
+                            </span>
                             avaliações
                         )</p>
                     </div>
@@ -178,8 +197,10 @@ $partial_loop = new WP_Query( array(
                         <div class="recommendations-text">
                             <!-- <span>3 clientes</span> recomendariam este produto para um amigo -->
                             <span>
-                                <?php  $recommended = dt3_rating_get_recommendations( $loop, $product_post_id ); ?>
-                                <?php echo esc_html( $recommended ); ?>
+                                <span class="recomendation-number">
+                                    <?php  $recommended = dt3_rating_get_recommendations( $loop, $product_post_id ); ?>
+                                    <?php echo esc_html( $recommended ); ?>
+                                </span>
                                 clientes
                             </span> 
                             recomendariam este produto para um amigo
@@ -523,6 +544,7 @@ $partial_loop = new WP_Query( array(
     <script type="text/javascript">
         var url_now = "<?php echo esc_url( home_url( '/' ) ); ?>"
     </script>
-    <!-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script> -->
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
     <script src="<?php echo PLUGIN_URL; ?>dt3-rating/js/main.js"></script>
     <script src="<?php echo PLUGIN_URL; ?>dt3-rating/js/index.js"></script>
+    <script src="<?php echo PLUGIN_URL; ?>dt3-rating/js/external_rating.js"></script>

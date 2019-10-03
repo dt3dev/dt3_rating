@@ -560,9 +560,9 @@ function dt3_rating_get_the_stars( $product_id ) {
 
 	// Exibe o total de avaliações
 	if ( 1 == $votes ) {
-		echo ' ( <a href="#comentarios"> '. $votes .' Avaliação </a> )';
+		echo ' ( <a href="#comentarios"> <span class="total-avaliations-top">'. $votes .'</span> Avaliação </a> )';
 	} else {
-		echo ' ( <a href="#comentarios"> '. $votes .' Avaliações </a> )';
+		echo ' ( <a href="#comentarios"> <span class="total-avaliations-top">'. $votes .'</span> Avaliações </a> )';
 	}
 	
 	// Close the query
