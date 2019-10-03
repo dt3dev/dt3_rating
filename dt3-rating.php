@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
  * Plugin Name: DT3 Rating
  * Plugin URI: https://www.dt3.com.br/
  * Description: Plugin de Avaliação da DT3
- * Version: 0.1.5
+ * Version: 0.2.0
  * Author: DT3
  * Author URI: https://www.dt3.com.br/
  * Text Domain: dt3-rating

@@ -2,7 +2,7 @@
 
 Requires at least: 4.0
 Tested up to: 4.9.1
-Stable tag: 0.2.5
+Stable tag: 0.2.0
 License: GPLv2 or later
 
 == Description ==
