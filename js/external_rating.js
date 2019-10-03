@@ -2,49 +2,20 @@
  * Busca dados de avaliaçãoes a partir de fontes externas
  * Inicialmente busca os dados da API aberta do Mercado Livre
  * https://developers.mercadolivre.com.br/pt_br/produto-autenticacao-autorizacao/
+ * 'https://api.mercadolibre.com/sites/MLB/search?nickname=DT3+OFICIAL&q=Ônix%20Diamond'
+ * 'https://api.mercadolibre.com/reviews/item/MLB1230252313'
  */
-
-
- // Boilerplate
- // Define o Endpoint da API para ser acessada
- // 'https://api.mercadolibre.com/sites/MLB/search?nickname=DT3SPORTS&q=%C3%94nix%20Diamond'
- // 'https://api.mercadolibre.com/sites/MLB/search?nickname=DT3+OFICIAL&q=Ônix%20Diamond'
- // Para montar a URl de busca:
- // Usar 'https://api.mercadolibre.com/sites/MLB/search?nickname=DT3+OFICIAL'
- // Use como referência o DT3 Oficial:
- // https://www.mercadolivre.com.br/perfil/DT3+OFICIAL
- // Adicionar nome do produto.
- // Ônix Diamond
- // Formatar como URL
- // Buscar o ID 
- // "results": [ { "id": "MLB1230252313",
- // https://api.mercadolibre.com/reviews/item/MLB1230252313
- // variation=36150943406
-
- // Itens não retornados:
 
 
 // Inicializa a URL da Busca
 let dt3_product_name = document.querySelector( '#description-wrap>h1:first-child' ).textContent;
-console.log( 'Nome do produto: ' + dt3_product_name );
-
 let search = 'https://api.mercadolibre.com/sites/MLB/search?nickname=DT3+OFICIAL&q=' + dt3_product_name;
-console.log( 'URL de Busca: ' + search );
-
-
-// https://api.mercadolibre.com/reviews/item/MLB1230252313
-// const PRODUCT_ENDPOINT = 'https://api.mercadolibre.com/reviews/item/' + ml_id;
-const PRODUCT_ENDPOINT = 'https://api.mercadolibre.com/reviews/item/MLB1080602222';
-
-// console.log( PRODUCT_ENDPOINT );
 
 /* 
  *  Get reviews
- *  https://api.mercadolibre.com/reviews/item/MLB1080602222
  *  https://api.mercadolibre.com/reviews/item/MLB1080602222/?offset=0
  *  Response: "reviews": [],
  *  Os dados serão obtidos a cada acesso à pagina
- *  Definir estratégias para persistir os dados sem poluir a base da DT3
  *  Dados relevantes:
  *  - total
  *  reviews:
@@ -58,26 +29,17 @@ const PRODUCT_ENDPOINT = 'https://api.mercadolibre.com/reviews/item/MLB108060222
  *  - three_star
  *  - four_star
  *  - five_star
- *  TODO:
- *  Paginar com base na API
  */
 
-// Executa uma chamada de API e retorna um objeto JSON
-
+// Função para chamada de API recalcular os valores das avaliações
 function dt3MakeApiCall( endpoint ) {
     // dt3GetMLId( endpoint );
     fetch( endpoint ).then( function(response){
         response.json().then( function( data ) {
-            console.log( 'Primeira etapa' );
-            console.log( data );
             let new_endpoint = 'https://api.mercadolibre.com/reviews/item/' + data.results[0].id;
-
             fetch( new_endpoint ).then( function(response) {
-                console.log( 'Segunda Etapa: ');
-                console.log( new_endpoint );
                 response.json().then(
                     function( data ) {
-                        console.log( data );
                         // Incializa o total de avaliações
                         const total_interno = parseInt( document.querySelector('.total-avaliations').innerText );
                         let ex_new_average = dt3ExAverage( data.rating_average, data.paging.total );
@@ -102,8 +64,7 @@ function dt3MakeApiCall( endpoint ) {
                         dt3RedrawStars ( ex_new_average );
                         dt3ExReviews( data.reviews, data.paging.offset );
                         relevantData = relevantData + '</ul> ';
-                        // document.getElementById('header-rating').innerHTML = relevantData;
-                        document.querySelector('.title').innerHTML = relevantData;
+                        // document.querySelector('.title').innerHTML = relevantData;
                         // Função herdado do index.js para recalcular as barras 
                         dt3PercentBar();
                     });
@@ -118,9 +79,8 @@ function dt3MakeApiCall( endpoint ) {
     
 }
 
-// dt3MakeApiCall( PRODUCT_ENDPOINT );
+// Executa a chamada da API
 dt3MakeApiCall( search );
-
 
 // Recebe nova média externa, o total de avaliações externas
 // Calcula a nova média
@@ -129,9 +89,6 @@ function dt3ExAverage( exaverage, extotal ) {
 
     let average = parseFloat( document.querySelector('.average-number').innerText );
     let total = parseFloat( document.querySelector('.total-avaliations').innerText );
-
-    console.log( 'average' + average );
-    console.log( 'total' + total );
 
     var new_total = dt3ExSum( extotal );
     var new_average;
@@ -177,9 +134,7 @@ function dt3ExSum( extotal ) {
 function dt3ExStar( extotal=0, exstar=0, star, total ) {
     // Se não houver avaliação atribua 0% para cada estrela.
     let perc_star = parseInt( document.querySelector('.percent-card-'+ star +'>div>p.percent-number').innerText );
-    console.log( 'perc_star' + perc_star  );
     let new_total = parseInt( document.querySelector('.total-avaliations').innerText );
-    console.log( 'new_total' + new_total  );
 
     if ( 0 == new_total ) {
         // Evita divisão por zero
@@ -198,19 +153,6 @@ function dt3ExStar( extotal=0, exstar=0, star, total ) {
 // Redesenha as estrelas
 // Recebe a nova média e 
 // Exibe a quantidade de estrelas correspondente
-/*
-<div class="clipboard-wrapper">
-    <img src="https://localhost/dt3/wp-content/plugins/dt3-rating/images/red-star.svg'" alt="">
-    <img src="https://localhost/dt3/wp-content/plugins/dt3-rating/images/red-star.svg'" alt="">
-    <img src="https://localhost/dt3/wp-content/plugins/dt3-rating/images/red-star.svg'" alt="">
-    <img src="https://localhost/dt3/wp-content/plugins/dt3-rating/images/white-star.svg'" alt="">
-    <img src="https://localhost/dt3/wp-content/plugins/dt3-rating/images/white-star.svg'" alt="">                           
-</div>
-
-// Percorre os imgs e troca apenas os nomes dos arquivos
-// document.querySelector( '.clipboard-wrapper>img:nth-child(5)' );
-
-*/
 function dt3RedrawStars ( new_average ) {
 
     let url = document.querySelector( '.clipboard-wrapper>img' ).src;
@@ -222,10 +164,8 @@ function dt3RedrawStars ( new_average ) {
   
     while ( n <= 5 ) {
         if ( n <= new_average ) {
-            // console.log( url + '/red-star.svg' );
             document.querySelector( '.clipboard-wrapper>img:nth-child('+ n +')' ).src = url + '/red-star.svg';
         } else {
-            // console.log( url + '/white-star.svg' );
             document.querySelector( '.clipboard-wrapper>img:nth-child('+ n +')' ).src = url + '/white-star.svg';
         }
         n++;
@@ -241,10 +181,8 @@ function dt3DrawStars( rating, url ) {
     while ( n <= 5 ) {
 
         if ( n <= rating ) {
-            // console.log( url + '/red-star.svg' );
             stars_string = stars_string + '<img src="' + url   + '/red-star.svg " alt="">';
         } else {
-            // console.log( url + '/white-star.svg' );
             stars_string = stars_string + '<img src="' + url   + '/white-star.svg " alt="">';
         }
 
@@ -276,8 +214,6 @@ function dt3ExRecomendations( fivestar, fourstar ) {
 // Adiciona os comentários dos usuários externos
 // Recebe o objeto review e o offset
 // Percorre o as opiniões adcionando abaixo dos comentários existentes
-// document.querySelector('.comment-item:first-child').dataset.load
-
 function dt3ExReviews( reviews, offset ) {
 
     // Quantidade de reviews
@@ -302,9 +238,6 @@ function dt3ExReviews( reviews, offset ) {
     for( i = 0; i < n_reviews ; i++) {
 
         console.log( 'Via Mercado Livre' );
-        // console.log( reviews[i].date_created );
-        // console.log( reviews[i].title );
-        // console.log( reviews[i].content );
 
         var node = document.createElement("div");
         var textnode = document.createTextNode("Carregando commentarios externos...");
@@ -314,10 +247,6 @@ function dt3ExReviews( reviews, offset ) {
         // Formata a data
         json_date = reviews[i].date_created;
         date = new Date( json_date );
-        // console.log( 'Data do comentário: ' + date );
-        // console.log( 'DIA: ' + date.getDate() );
-        // console.log( 'MÊS: ' + ( date.getMonth() + 1 )  );
-        // console.log( 'ANO: ' + date.getFullYear() );
 
         dia = date.getDate();
         mes = ( date.getMonth() + 1 );
@@ -358,7 +287,6 @@ function dt3ExReviews( reviews, offset ) {
         } 
         comment_item = comment_item + '</div>';
         
-        /// document.querySelector('.comments>div:last-child').innerHTML= '<div class="comment-item">Esse é um comentario de verdade</div>';
         document.querySelector('.comments>div:last-child').innerHTML= comment_item;
 
     }
