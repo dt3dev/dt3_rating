@@ -9,7 +9,7 @@ class Rating {
    * @param string $name Nome do campo buscado
    * @return string Valor do campo buscado
    */
-  public function get_field($name): ?string {
+  public static function get_field($name): ?string {
     $post_id = get_the_ID();
     $field_value = get_post_meta($post_id, $name, true);
     return $field_value;
@@ -31,8 +31,8 @@ class Rating {
    * Mostra o template HTML com número
    * de estrelas.
    */
-  public function the_stars(): void {
-    $rating = intval($this->get_field('dt3_rating_stars'));
+  public static function the_stars(): void {
+    $rating = intval(self::get_field('dt3_rating_stars'));
 
     foreach (range(1, 5) as $star) {
         if ( $star <= $rating ) {
@@ -49,8 +49,8 @@ class Rating {
    *
    * @return string Template HTML
    */
-  public function get_stars(): string {
-    $rating = intval( $this->get_field('dt3_rating_stars'));
+  public static function get_stars(): string {
+    $rating = intval( self::get_field('dt3_rating_stars'));
     $stars_template = '';
     foreach(range(1, 5) as $star) {
         if ($star <= $rating) {
@@ -86,7 +86,7 @@ class Rating {
    * @param string $post_id ID do post
    * @return mixed Array contendo os dados do comentário.
    */
-  public function get_comments($post_id) {
+  public static function get_comments($post_id) {
 
     $rating_array = array();
     $c = 0;
@@ -123,8 +123,8 @@ class Rating {
    * @param string $post_id ID do post o qual se deseja obter as reviews
    * @return int Número de reviews do post
    */
-  public function woo_reviews (string $post_id): int {
-    $reviews = $this->get_comments($post_id);
+  public static function woo_reviews (string $post_id): int {
+    $reviews = self::get_comments($post_id);
     $total_reviews = count($reviews);
 
     return $total_reviews;
@@ -136,8 +136,8 @@ class Rating {
    * @param string $post_id ID do post o qual se deseja obter as reviews
    * @return int Número de reviews do post
    */
-  public function woo_all_reviews ($post_id): int {
-    $reviews = $this->get_comments($post_id);
+  public static function woo_all_reviews ($post_id): int {
+    $reviews = self::get_comments($post_id);
 
     $all_reviews = array_reduce($reviews, function($total, $review): int {
       $total += $review['rating'];
@@ -154,11 +154,11 @@ class Rating {
    * @param  string $post_id ID do post de onde serão listadas as avaliações
    * @return float  Média de avaliações do post
    */
-  public function get_average_ratings(array $ratings = [], string $post_id = '5'): ?float {
+  public static function get_average_ratings(array $ratings = [], string $post_id = '5'): ?float {
     $total_ratings   = count($ratings);
-    $total_ratings  += intval($this->woo_reviews($post_id));
+    $total_ratings  += intval(self::woo_reviews($post_id));
     $woo_reviews     = array_sum($ratings);
-    $woo_all_reviews = $this->woo_all_reviews($post_id);
+    $woo_all_reviews = self::woo_all_reviews($post_id);
 
     if ($total_ratings != 0) {
       $average = ($woo_reviews + $woo_all_reviews) / $total_ratings;
@@ -177,15 +177,15 @@ class Rating {
    * @param  string   $post_id ID do post de onde serão listadas as avaliações
    * @return float    Média de de estrelas do post
    */
-  public function get_stars_average($loop, $post_id = '5'): float {
+  public static function get_stars_average($loop, $post_id = '5'): float {
     $array_stars = array();
 
     while ( $loop->have_posts() ) :
       $loop->the_post();
-      $array_stars[] = $this->get_field('dt3_rating_stars');
+      $array_stars[] = self::get_field('dt3_rating_stars');
     endwhile;
 
-    $stars_average = $this->get_average_ratings($array_stars, $post_id);
+    $stars_average = self::get_average_ratings($array_stars, $post_id);
 
     return $stars_average;
   }
@@ -212,15 +212,15 @@ class Rating {
    * @param  WP_Query $loop Wordpress Loop
    * @return float Média de avaliações de conforto
    */
-  public function get_confort_average($loop): ?float {
+  public static function get_confort_average($loop): ?float {
     $array_stars = array();
 
     while ($loop->have_posts()):
       $loop->the_post();
-      $array_stars[] = $this->get_field('dt3_rating_confort');
+      $array_stars[] = self::get_field('dt3_rating_confort');
     endwhile;
 
-    $stars_average = $this->get_average_ratings($array_stars);
+    $stars_average = self::get_average_ratings($array_stars);
 
     return $stars_average;
   }
@@ -232,15 +232,15 @@ class Rating {
    * @param  WP_Query $loop Wordpress Loop
    * @return float Média de avaliações de qualidade
    */
-  public function get_quality_average($loop): ?float {
+  public static function get_quality_average($loop): ?float {
     $array_quality = array();
 
     while ($loop->have_posts()):
       $loop->the_post();
-      $array_quality[] = $this->get_field('dt3_rating_quality');
+      $array_quality[] = self::get_field('dt3_rating_quality');
     endwhile;
 
-    $quality_average = $this->get_average_ratings($array_quality);
+    $quality_average = self::get_average_ratings($array_quality);
 
     return $quality_average;
   }
@@ -252,15 +252,15 @@ class Rating {
    * @param  WP_Query $loop Wordpress Loop
    * @return float Média de avaliações de funcionalidade
    */
-  public function get_features_average($loop): float {
+  public static function get_features_average($loop): float {
     $array_features = array();
 
     while ($loop->have_posts()):
       $loop->the_post();
-      $array_features[] = $this->get_field('dt3_rating_features');
+      $array_features[] = self::get_field('dt3_rating_features');
     endwhile;
 
-    $features_average = $this->get_average_ratings($array_features);
+    $features_average = self::get_average_ratings($array_features);
 
     return $features_average;
   }
@@ -273,15 +273,15 @@ class Rating {
    * @param  string $attribute Atributo o qual se deseja calcular a média de avaliações
    * @return float Média de avaliações do atributo especificado
    */
-  public function get_attribute_average($loop, string $attribute = 'dt3_rating_stars'): float {
+  public static function get_attribute_average($loop, string $attribute = 'dt3_rating_stars'): float {
     $attribute_array = array();
 
     while ($loop->have_posts()):
       $loop->the_post();
-      $attribute_array[] = $this->get_field($attribute);
+      $attribute_array[] = self::get_field($attribute);
     endwhile;
 
-    $attribute_average = $this->get_average_ratings($attribute_array);
+    $attribute_average = self::get_average_ratings($attribute_array);
 
     return $attribute_average;
   }
@@ -293,8 +293,8 @@ class Rating {
    * @param  string $post_id ID do post o qual se deseja o número de avaliações
    * @return int Total de avaliações de um post
    */
-  public function get_total($loop,  string $post_id = '5'): int {
-    $total_rate = $loop->post_count + $this->woo_reviews($post_id);
+  public static function get_total($loop,  string $post_id = '5'): int {
+    $total_rate = $loop->post_count + self::woo_reviews($post_id);
     return $total_rate;
   }
 
@@ -314,8 +314,8 @@ class Rating {
    * O código acima irá retornar a quantidade de avaliações
    * com `3` estrelas do post `3253`.
    */
-  public function woo_count_star(int $star, string $post_id) {
-    $reviews = $this->get_comments($post_id);
+  public static function woo_count_star(int $star, string $post_id) {
+    $reviews = self::get_comments($post_id);
     $star_total = 0;
 
     foreach ($reviews as $review) {
@@ -344,8 +344,8 @@ class Rating {
    * O código acima irá retornar o percentual de avaliações
    * com `3` estrelas do post `3253`.
    */
-  public function get_percent($star, $loop, $post_id = '5') {
-    $total = $this->get_total($loop, $post_id);
+  public static function get_percent($star, $loop, $post_id = '5') {
+    $total = self::get_total($loop, $post_id);
     $stars = 0;
     $star_counter = 0;
     $percent = 0;
@@ -354,7 +354,7 @@ class Rating {
 
     while ($loop->have_posts()):
       $loop->the_post();
-      $star_counter = intval($this->get_field('dt3_rating_stars'));
+      $star_counter = intval(self::get_field('dt3_rating_stars'));
 
       if ($star == $star_counter) {
         $p++;
@@ -364,7 +364,7 @@ class Rating {
     // Total de de uma certa estrela atribuida pelo plugin dt3_rating
     $stars = $p;
 
-    $stars += intval ($this->woo_count_star($star, $post_id));
+    $stars += intval (self::woo_count_star($star, $post_id));
 
     // Verify total
     if ( $total > 0 ) {
@@ -383,8 +383,8 @@ class Rating {
    * o cliente recomendaria o produto para
    * um amigo
    */
-  public function the_recommendation(): void {
-      $rating_recommendations = $this->get_field('dt3_rating_recomendations');
+  public static function the_recommendation(): void {
+      $rating_recommendations = self::get_field('dt3_rating_recomendations');
 
       if ($rating_recommendations == 'yes') {
         echo '<img src="'. PLUGIN_URL .'/dt3-rating/images/circle-with-check-symbol.svg" alt="">';
@@ -400,8 +400,8 @@ class Rating {
    * o cliente recomendaria o produto para
    * um amigo
    */
-  public function get_recommendation (): string {
-      $rating_recommendations = $this->get_field('dt3_rating_recomendations');
+  public static function get_recommendation (): string {
+      $rating_recommendations = self::get_field('dt3_rating_recomendations');
 
       if ($rating_recommendations == 'yes') {
         $recommendation_string = '<img src="'. PLUGIN_URL .'/dt3-rating/images/circle-with-check-symbol.svg" alt="">';
@@ -419,8 +419,8 @@ class Rating {
    * o cliente recomendaria o produto para
    * um amigo
    */
-  public function have_recommended(): bool {
-    $rating_recommendations = $this->get_field('dt3_rating_recomendations');
+  public static function have_recommended(): bool {
+    $rating_recommendations = self::get_field('dt3_rating_recomendations');
     return $rating_recommendations == 'yes';
   }
 
@@ -432,16 +432,16 @@ class Rating {
    * @param string $post_id ID do post o qual se deseja o número de recomendações
    * @return int Número de recomendações do post solicitado
    */
-  public function get_recommendations($loop, string $post_id = '5'): int {
+  public static function get_recommendations($loop, string $post_id = '5'): int {
     $recommendations = 0;
 
     while ($loop->have_posts()):
       $loop->the_post();
-      if ($this->have_recommended()) ++$recommendations;
+      if (self::have_recommended()) ++$recommendations;
     endwhile;
 
     foreach (range(3, 5) as $star) {
-      $recommendations += $this->woo_count_star($star, $post_id);
+      $recommendations += self::woo_count_star($star, $post_id);
     }
 
     return $recommendations;
@@ -453,8 +453,8 @@ class Rating {
    * @param string $post_id ID do post o qual se deseja a média de avaliações
    * @return float Média de avaliações do post solicitado
    */
-  public function get_woo_average($post_id): float {
-    $reviews = $this->get_comments($post_id);
+  public static function get_woo_average($post_id): float {
+    $reviews = self::get_comments($post_id);
     $all_reviews = 0;
     $total_reviews = count($reviews);
 
@@ -475,7 +475,7 @@ class Rating {
    *
    * @param string $post_id ID do post o qual se deseja mostrar esse template
    */
-  public function the_ratings(string $post_id): void {
+  public static function the_ratings(string $post_id): void {
     $loop_rating = new WP_Query( array(
         'post_type'      => 'dt3-rating',
         'posts_per_page' => -1,
@@ -483,9 +483,9 @@ class Rating {
         'meta_value'     => $post_id,
     ));
 
-    $average_rating = $this->get_stars_average($loop_rating, $post_id);
+    $average_rating = self::get_stars_average($loop_rating, $post_id);
 
-    $votes = $this->get_total($loop_rating, $post_id);
+    $votes = self::get_total($loop_rating, $post_id);
 
     echo wc_get_rating_html($average_rating);
 
@@ -504,7 +504,7 @@ class Rating {
    *
    * @param string $post_id ID do post o qual se deseja mostrar esse template
    */
-  public function get_stars_avaliation($post_id) {
+  public static function get_stars_avaliation($post_id) {
     $loop_rating = new WP_Query( array(
       'post_type'         => 'dt3-rating',
       'posts_per_page'    => -1,
@@ -512,7 +512,7 @@ class Rating {
       'meta_value'        => $post_id,
     ));
 
-    $average_rating = $this->get_stars_average($loop_rating, $post_id);
+    $average_rating = self::get_stars_average($loop_rating, $post_id);
 
     echo wc_get_rating_html($average_rating);
 
