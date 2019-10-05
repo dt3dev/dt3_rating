@@ -118,36 +118,6 @@ class Rating {
   }
 
   /**
-   * Retorna reviews do woocommerce.
-   *
-   * @param string $post_id ID do post o qual se deseja obter as reviews
-   * @return int Número de reviews do post
-   */
-  public static function woo_reviews (string $post_id): int {
-    $reviews = self::get_comments($post_id);
-    $total_reviews = count($reviews);
-
-    return $total_reviews;
-  }
-
-  /**
-   * Retorna todos os reviews do woocommerce.
-   *
-   * @param string $post_id ID do post o qual se deseja obter as reviews
-   * @return int Número de reviews do post
-   */
-  public static function woo_all_reviews ($post_id): int {
-    $reviews = self::get_comments($post_id);
-
-    $all_reviews = array_reduce($reviews, function($total, $review): int {
-      $total += $review['rating'];
-      return $total;
-    }, 0);
-
-    return $all_reviews;
-  }
-
-  /**
    * Calcula o valor correspondente a média de avaliações.
    *
    * @param  array  $ratings Array contendo uma lista de avaliações
@@ -155,13 +125,11 @@ class Rating {
    * @return float  Média de avaliações do post
    */
   public static function get_average_ratings(array $ratings = [], string $post_id = '5'): ?float {
-    $total_ratings   = count($ratings);
-    $total_ratings  += intval(self::woo_reviews($post_id));
-    $woo_reviews     = array_sum($ratings);
-    $woo_all_reviews = self::woo_all_reviews($post_id);
+    $ratings_quantity = count($ratings);
+    $ratings_sum      = array_sum($ratings);
 
-    if ($total_ratings != 0) {
-      $average = ($woo_reviews + $woo_all_reviews) / $total_ratings;
+    if ($ratings_quantity != 0) {
+      $average = $ratings_sum / $ratings_quantity;
       $average = round($average, 1);
     } else {
       $average = null;
@@ -290,41 +258,11 @@ class Rating {
    * Retorna o número de avaliações de um post.
    *
    * @param  WP_Query $loop Wordpress Loop
-   * @param  string $post_id ID do post o qual se deseja o número de avaliações
    * @return int Total de avaliações de um post
    */
-  public static function get_total($loop,  string $post_id = '5'): int {
-    $total_rate = $loop->post_count + self::woo_reviews($post_id);
+  public static function get_total($loop): int {
+    $total_rate = $loop->post_count;
     return $total_rate;
-  }
-
-  /**
-   * Retorna a quantidade de avaliações para
-   * um determinado número de estrelas.
-   *
-   * @param  int $star O número de estrelas o qual se deseja verificar a quantidade de avaliações
-   * @param  string $post_id ID do post o qual se deseja a quantidade de avaliações com um número `$star` de estrelas
-   * @return int Quantidade de avaliações com um número `$star` de estrelas
-   *
-   * **Exemplo**:
-   * ```
-   * woo_count_star(3, 3253).
-   * ```
-   *
-   * O código acima irá retornar a quantidade de avaliações
-   * com `3` estrelas do post `3253`.
-   */
-  public static function woo_count_star(int $star, string $post_id) {
-    $reviews = self::get_comments($post_id);
-    $star_total = 0;
-
-    foreach ($reviews as $review) {
-      if ($review[ 'rating' ] == $star) {
-        $star_total++;
-      }
-    }
-
-    return $star_total;
   }
 
   /**
@@ -363,8 +301,6 @@ class Rating {
 
     // Total de de uma certa estrela atribuida pelo plugin dt3_rating
     $stars = $p;
-
-    $stars += intval (self::woo_count_star($star, $post_id));
 
     // Verify total
     if ( $total > 0 ) {
@@ -440,33 +376,7 @@ class Rating {
       if (self::have_recommended()) ++$recommendations;
     endwhile;
 
-    foreach (range(3, 5) as $star) {
-      $recommendations += self::woo_count_star($star, $post_id);
-    }
-
     return $recommendations;
-  }
-
-  /**
-   * Retorna a média de avaliações do woocommerce.
-   *
-   * @param string $post_id ID do post o qual se deseja a média de avaliações
-   * @return float Média de avaliações do post solicitado
-   */
-  public static function get_woo_average($post_id): float {
-    $reviews = self::get_comments($post_id);
-    $all_reviews = 0;
-    $total_reviews = count($reviews);
-
-    foreach ($reviews as $review) {
-      $all_reviews += $review['rating'];
-    }
-
-    $average_reviews = $all_reviews / $total_reviews;
-
-    $average_reviews = round($average_reviews, 1);
-
-    return $average_reviews;
   }
 
   /**
