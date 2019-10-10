@@ -10,7 +10,7 @@ O objetivo do plugin é obter dados chave da experiência do usuário com os pro
 
 ### Plugin em fase de testes ###
 
-*A DT3 não oferece garantias quanto ao uso deste plugin e a eventuais perdas ou danos derivados do seu uso e instalação *
+**A DT3 não oferece garantias quanto ao uso deste plugin e a eventuais perdas ou danos derivados do seu uso e instalação**
 
 Use por sua conta e risco.
 
