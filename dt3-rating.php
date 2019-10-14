@@ -23,7 +23,7 @@ include_once 'define.php';
 // Add the admin options page
 
 function dt3_rating_admin_add_page() {
-	add_options_page('DT3 Rating Page', 'DT3 Rating Menu', 'manage_options', 'plugin', 'dt3_rating_options_page');
+	add_options_page('DT3 Rating Page', 'DT3 Rating Config', 'manage_options', 'plugin', 'dt3_rating_options_page');
 }
 add_action('admin_menu', 'dt3_rating_admin_add_page');
 
@@ -70,30 +70,36 @@ function dt3_rating_admin_init () {
 	// Cria Post Type dt3-rating
 	// register_post_type('dt3-rating', $dt3_rating_registry );
 
-	add_settings_section('dt3_rating_main', 'Seção 1', 'dt3_rating_section_text', 'dt3_rating');
-	// Campo Generico - text_string
-	add_settings_field('dt3_rating_text_string', 'DT3 Rating Text Input', 'dt3_rating_setting_string', 'dt3_rating', 'dt3_rating_main');
+	add_settings_section('dt3_rating_main', 'Personalização', 'dt3_rating_section_text', 'dt3_rating');
 	// Substitui o campo conforto
-	add_settings_field('dt3_rating_conforto', 'Texto para conforto', 'dt3_rating_setting_string', 'dt3_rating', 'dt3_rating_main');
+	add_settings_field('dt3_rating_conforto', 'Critério de avaliação 1', 'dt3_rating_setting_conforto', 'dt3_rating', 'dt3_rating_main');
 	// Substitui o campo qualidade
-	add_settings_field('dt3_rating_qualidade', 'Texto para qualidade', 'dt3_rating_setting_string', 'dt3_rating', 'dt3_rating_main');
+	add_settings_field('dt3_rating_qualidade', 'Critério de avaliação 2', 'dt3_rating_setting_qualidade', 'dt3_rating', 'dt3_rating_main');
 	// Substitui o campo características
-	add_settings_field('dt3_rating_caracteristicas', 'Texto para características', 'dt3_rating_setting_string', 'dt3_rating', 'dt3_rating_main');
+	add_settings_field('dt3_rating_caracteristicas', 'Critério de avaliação 3', 'dt3_rating_setting_caracteristicas', 'dt3_rating', 'dt3_rating_main');
 }
 add_action('admin_init', 'dt3_rating_admin_init');
 
 // Add the text
 function dt3_rating_section_text() {
-	echo '<p>Descrição da seção.</p>';
+	echo '<p>Personalize os critérios da avaliação</p>';
 }
 
 // Make one field to the form
-function dt3_rating_setting_string() {
+function dt3_rating_setting_conforto() {
 	$options = get_option('dt3_rating_options');
-	// var_dump( $options );
-	echo "<input id='dt3_rating_text_string' name='dt3_rating_options[text_string]' size='40' type='text' value='{$options['text_string']} ' />";
-	echo "<input id='dt3_rating_conforto' name='dt3_rating_options[conforto]' size='40' type='text' value='{$options['conforto']} ' />";
-	echo "<input id='dt3_rating_qualidade' name='dt3_rating_options[qualidade]' size='40' type='text' value='{$options['qualidade']} ' />";
+	echo "<input id='dt3_rating_text_conforto' name='dt3_rating_options[conforto]' size='40' type='text' value='{$options['conforto']} ' />";
+}
+
+// Make one field to the form
+function dt3_rating_setting_qualidade() {
+	$options = get_option('dt3_rating_options');
+	echo "<input id='dt3_rating_text_qualidad' name='dt3_rating_options[qualidade]' size='40' type='text' value='{$options['qualidade']} ' />";
+}
+
+// Make one field to the form
+function dt3_rating_setting_caracteristicas() {
+	$options = get_option('dt3_rating_options');
 	echo "<input id='dt3_rating_caracteristicas' name='dt3_rating_options[caracteristicas]' size='40' type='text' value='{$options['caracteristicas']} ' />";
 }
 
@@ -101,10 +107,22 @@ function dt3_rating_setting_string() {
 function dt3_rating_options_validate($input) {
 
 	$newinput['text_string'] = trim($input['text_string']);
+	$newinput['conforto'] = trim($input['conforto']);
+	$newinput['qualidade'] = trim($input['qualidade']);
+	$newinput['caracteristicas'] = trim($input['caracteristicas']);
 
 	// if(!preg_match('/^[a-z0-9]$/i', $newinput['text_string'])) {
 	if(!preg_match('([A-Z])', $newinput['text_string'])) {
 		$newinput['text_string'] = '';
+	}
+	if(!preg_match('([A-Z])', $newinput['conforto'])) {
+		$newinput['conforto'] = '';
+	}
+	if(!preg_match('([A-Z])', $newinput['qualidade'])) {
+		$newinput['qualidade'] = '';
+	}
+	if(!preg_match('([A-Z])', $newinput['caracteristicas'])) {
+		$newinput['caracteristicas'] = '';
 	}
 	return $newinput;
 }
