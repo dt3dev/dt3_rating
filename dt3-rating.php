@@ -37,7 +37,7 @@ function dt3_rating_options_page() {
 	<ul>
 		<li>
 			ACF:
-			<?php 
+			<?php
 
 			//  Melhore a forma de verificar se o ACF está instalado.
 			if(function_exists("register_field_group")) {
@@ -58,7 +58,7 @@ function dt3_rating_options_page() {
 		<?php do_settings_sections('dt3_rating'); ?>
 	<input name="Submit" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
 	</form></div>
-	
+
 	<?php
 }
 
@@ -66,32 +66,42 @@ function dt3_rating_options_page() {
 function dt3_rating_admin_init () {
 
 	register_setting( 'dt3_rating_options', 'dt3_rating_options', 'dt3_rating_options_validate' );
-	
+
 	// Cria Post Type dt3-rating
 	// register_post_type('dt3-rating', $dt3_rating_registry );
 
 	add_settings_section('dt3_rating_main', 'Seção 1', 'dt3_rating_section_text', 'dt3_rating');
+	// Campo Generico - text_string
 	add_settings_field('dt3_rating_text_string', 'DT3 Rating Text Input', 'dt3_rating_setting_string', 'dt3_rating', 'dt3_rating_main');
+	// Substitui o campo conforto
+	add_settings_field('dt3_rating_conforto', 'Texto para conforto', 'dt3_rating_setting_string', 'dt3_rating', 'dt3_rating_main');
+	// Substitui o campo qualidade
+	add_settings_field('dt3_rating_qualidade', 'Texto para qualidade', 'dt3_rating_setting_string', 'dt3_rating', 'dt3_rating_main');
+	// Substitui o campo características
+	add_settings_field('dt3_rating_caracteristicas', 'Texto para características', 'dt3_rating_setting_string', 'dt3_rating', 'dt3_rating_main');
 }
 add_action('admin_init', 'dt3_rating_admin_init');
 
 // Add the text
 function dt3_rating_section_text() {
 	echo '<p>Descrição da seção.</p>';
-} 
+}
 
 // Make one field to the form
 function dt3_rating_setting_string() {
 	$options = get_option('dt3_rating_options');
 	// var_dump( $options );
 	echo "<input id='dt3_rating_text_string' name='dt3_rating_options[text_string]' size='40' type='text' value='{$options['text_string']} ' />";
-} 
+	echo "<input id='dt3_rating_conforto' name='dt3_rating_options[conforto]' size='40' type='text' value='{$options['conforto']} ' />";
+	echo "<input id='dt3_rating_qualidade' name='dt3_rating_options[qualidade]' size='40' type='text' value='{$options['qualidade']} ' />";
+	echo "<input id='dt3_rating_caracteristicas' name='dt3_rating_options[caracteristicas]' size='40' type='text' value='{$options['caracteristicas']} ' />";
+}
 
 // Validate our options
 function dt3_rating_options_validate($input) {
 
 	$newinput['text_string'] = trim($input['text_string']);
-	
+
 	// if(!preg_match('/^[a-z0-9]$/i', $newinput['text_string'])) {
 	if(!preg_match('([A-Z])', $newinput['text_string'])) {
 		$newinput['text_string'] = '';
@@ -146,7 +156,7 @@ add_filter('acf/settings/url', 'my_acf_settings_url');
 
 // (Optional) Hide the ACF admin menu item.
 function my_acf_settings_show_admin( $show_admin ) {
- 
+
     return false;
 
 }
@@ -161,7 +171,7 @@ function dt3_rating_init_frontend_form() {
 
 }
 add_action('init', 'dt3_rating_init_frontend_form');
-*/	
+*/
 
 add_action( 'wp_ajax_dt3_acf_save_data', 'acf_form_head' );
 add_action( 'wp_ajax_nopriv_dt3_acf_save_data', 'acf_form_head' );
@@ -170,7 +180,7 @@ add_action( 'wp_ajax_nopriv_dt3_acf_save_data', 'acf_form_head' );
 
 // Insert rating form in comments
 function dt3_rating_form() {
-	
+
 	include_once 'template_functions.php';
 	include_once 'template.php';
 
