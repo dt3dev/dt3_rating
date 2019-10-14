@@ -85,6 +85,8 @@ Você também pode ajudar o projeto testando, corrigindo, documentando ou desenv
 Se você quer contribuir com o desenvolvimento desse projeto, acesso a página do nosso time no Github:
 [https://github.com/orgs/dt3dev/teams/dt3](https://github.com/orgs/dt3dev/teams/dt3)
 
+Novos Pull requests devem ser submetidos para a branch dev.
+
 
 ## Licensa de Software ##
 
