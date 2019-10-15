@@ -173,7 +173,7 @@ class Rating {
    *
    * @param int $average Média de estrelas
    */
-  function the_averarge_stars(int $average): void {
+  public static function the_averarge_stars(int $average): void {
       foreach(range(1, 5) as $star) {
           if ($star <= $average) {
               echo "<img src=". PLUGIN_URL ."dt3-rating/images/red-star.svg' alt='' >";
