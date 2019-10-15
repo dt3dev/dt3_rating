@@ -1,6 +1,6 @@
 <?php
 
-namespace DT3;
+namespace DT3Rating;
 class Rating {
   /**
    * Retorna as avaliações de um determinado post

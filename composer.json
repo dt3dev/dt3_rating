@@ -3,6 +3,6 @@
     "philo/laravel-blade": "3.*"
   },
   "autoload": {
-      "psr-4": {"DT3\\": "classes/"}
+      "psr-4": {"DT3Rating\\": "classes/"}
   }
 }

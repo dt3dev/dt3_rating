@@ -12,9 +12,9 @@
 require __DIR__ . '/vendor/autoload.php';
 include_once 'define.php';
 
-use DT3\Security;
-use DT3\Panel;
-use DT3\Plugin;
+use DT3Rating\Security;
+use DT3Rating\Panel;
+use DT3Rating\Plugin;
 
 Security::denyDirectAccess();
 Panel::init();

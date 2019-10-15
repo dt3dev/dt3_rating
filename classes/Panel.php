@@ -1,6 +1,6 @@
 <?php
 
-namespace DT3;
+namespace DT3Rating;
 
 class Panel {
   public static function init(): void {

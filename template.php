@@ -1,11 +1,13 @@
 <?php
 
+use DT3Rating\Rating;
+
 // Identifica o post
 $product_post_id = get_the_ID();
 
 // Trate os loops para um grande numero de avaliações
 // Para fins de contagem use o loop com todos os itens
-$loop = new WP_Query( array( 
+$loop = new WP_Query( array(
     'post_type'         => 'dt3-rating',
     'posts_per_page'    => -1,
     'meta_key'          => 'dt3_rating_post_id',
@@ -15,7 +17,7 @@ $loop = new WP_Query( array(
 
 // Para carregamento retorne deste loop apenas as páginas que deseja de 4 em 4 páginas.
 // Carregar inicialmente apenas 4 avaliações
-$partial_loop = new WP_Query( array( 
+$partial_loop = new WP_Query( array(
     'post_type'         => 'dt3-rating',
     'posts_per_page'    => 4,
     'meta_key'          => 'dt3_rating_post_id',
@@ -41,7 +43,7 @@ $partial_loop = new WP_Query( array(
                     <h4>Média de avaliações</h4>
                     <!-- <h2>4.5</h2> -->
                     <h2>
-                    <?php $stars_average = dt3_rating_stars_average( $loop, $product_post_id ); ?>
+                    <?php $stars_average = Rating::get_stars_average($product_post_id); ?>
                     <?php settype($stars_average, "double"); ?>
                     <?php echo sprintf("%2.1f", $stars_average); ?>
                     </h2>
@@ -58,7 +60,7 @@ $partial_loop = new WP_Query( array(
                             <?php
                                 dt3_rating_the_averarge_stars( $stars_average );
                             ?>
-                           
+
                             <img id="arrow-clipboard" src="<?php echo PLUGIN_URL; ?>dt3-rating/images/expand-button.svg" alt="" style="padding: 0 10px">
                         </div>
                         <div class="users-rating-mobile">
@@ -68,7 +70,7 @@ $partial_loop = new WP_Query( array(
                                     $dt3_rating_total = dt3_rating_total( $loop, $product_post_id );
                                     echo esc_html( $dt3_rating_total ) ;
                                 ?>
-                                <?php 
+                                <?php
                                     echo 1 == $dt3_rating_total ? 'avaliação' : 'avaliações';
                                 ?>
                             )</p>
@@ -77,7 +79,7 @@ $partial_loop = new WP_Query( array(
                             <div class="percent-stars">
                                 <p>5</p>
                                 <img src="<?php echo PLUGIN_URL; ?>dt3-rating/images/red-star.svg" alt="">
-                            </div> 
+                            </div>
                             <div class="percent-bar">
                                 <div class="percent-out">
                                     <div class="percent-in-5"></div>
@@ -95,7 +97,7 @@ $partial_loop = new WP_Query( array(
                             <div class="percent-stars">
                                 <p>4</p>
                                 <img src="<?php echo PLUGIN_URL; ?>dt3-rating/images/red-star.svg" alt="">
-                            </div> 
+                            </div>
                             <div class="percent-bar">
                                 <div class="percent-out">
                                     <div class="percent-in-4"></div>
@@ -113,7 +115,7 @@ $partial_loop = new WP_Query( array(
                             <div class="percent-stars">
                                 <p>3</p>
                                 <img src="<?php echo PLUGIN_URL; ?>dt3-rating/images/red-star.svg" alt="">
-                            </div> 
+                            </div>
                             <div class="percent-bar">
                                 <div class="percent-out">
                                     <div class="percent-in-3"></div>
@@ -131,7 +133,7 @@ $partial_loop = new WP_Query( array(
                             <div class="percent-stars">
                                 <p>2</p>
                                 <img src="<?php echo PLUGIN_URL; ?>dt3-rating/images/red-star.svg" alt="">
-                            </div> 
+                            </div>
                             <div class="percent-bar">
                                 <div class="percent-out">
                                     <div class="percent-in-2"></div>
@@ -149,7 +151,7 @@ $partial_loop = new WP_Query( array(
                             <div class="percent-stars">
                                 <p>1</p>
                                 <img src="<?php echo PLUGIN_URL; ?>dt3-rating/images/red-star.svg" alt="">
-                            </div> 
+                            </div>
                             <div class="percent-bar">
                                 <div class="percent-out">
                                     <div class="percent-in-1"></div>
@@ -181,14 +183,14 @@ $partial_loop = new WP_Query( array(
                                 <?php  $recommended = dt3_rating_get_recommendations( $loop, $product_post_id ); ?>
                                 <?php echo esc_html( $recommended ); ?>
                                 clientes
-                            </span> 
+                            </span>
                             recomendariam este produto para um amigo
                         </div>
                     </div>
                 </div>
                 <div class="details">
                     <div class="comfort">
-                        <h3>CONFORTO 
+                        <h3>CONFORTO
                         <?PHP
                             $confort_rate = dt3_rating_attribute_average( $loop, 'dt3_rating_confort' );
                             // echo $confort_rate;
@@ -459,10 +461,10 @@ $partial_loop = new WP_Query( array(
                 // Retorne um partial loop que será usado apenas na primeira iteração de 4 posts
                 // Para cada novo ciclo execute novos WP_Querys retornando novos dados
                 // Conte cada post e armazene em data-load
-                
+
                 // Number of ratings loaded
                 $ratings_loaded = 0;
-                
+
                 while ( $partial_loop->have_posts() ) : $partial_loop->the_post();
 
                 $rating_post_id = get_the_ID();
@@ -496,7 +498,7 @@ $partial_loop = new WP_Query( array(
                                 <?php
                                     // Exibir os icones de recomendação ou não
                                     // Exibir exibir texto de recomendação
-                                    // $rating_recomendations = dt3_rating_get_field( 'dt3_rating_recomendations' ); 
+                                    // $rating_recomendations = dt3_rating_get_field( 'dt3_rating_recomendations' );
                                     // echo $rating_recomendations;
                                     dt3_rating_the_recommendation ();
                                 ?>
@@ -510,7 +512,7 @@ $partial_loop = new WP_Query( array(
 
                 endwhile;
             ?>
-            
+
         </section>
         <section class="rating-more">
             <div class="rating-loading"></div>
