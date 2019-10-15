@@ -1,5 +1,7 @@
 <?php
 
+use DT3Rating\Rating;
+
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 include_once 'template_functions.php';
@@ -56,9 +58,9 @@ function dt3_save_rating () {
 			update_field( 'dt3_rating_recomendations', $rating_recomendations, $post_id );
 			update_field( 'dt3_rating_post_id', $product_post_id, $post_id );
 			update_field( 'dt3_rating_post_title', $product_post_title, $post_id );
-			
+
 			$status = 1;
-			
+
 		} else {
 
 			$status = 0;
@@ -73,7 +75,7 @@ function dt3_save_rating () {
 
 }
 
-/* 
+/*
  * Hooks que passam a função para o wp_ajax
  */
 add_action('wp_ajax_dt3_save_rating', 'dt3_save_rating'); // Logged-in users
@@ -96,9 +98,9 @@ function dt3_load_rating () {
 			$product_post_id	= esc_html($_POST['product_post_id']);
 
 			$rating_to_load = $rating_loaded + 1;
-		
+
 			// Executes the query with offset = data-load + 1
-			$ajax_loop = new WP_Query( array( 
+			$ajax_loop = new WP_Query( array(
 				'post_type' 		=> 'dt3-rating',
 				'posts_per_page' 	=> 4,
 				'offset' 			=>  $rating_to_load,
@@ -113,17 +115,17 @@ function dt3_load_rating () {
             $rating_string = '';
 
 			// Estrutura o conteúdo em uma string
-			 while ( $ajax_loop->have_posts() ) : 
+			 while ( $ajax_loop->have_posts() ) :
 			 	$ajax_loop->the_post();
 
-                $rating_post_id  = get_the_ID();
-                $rating_stars 	 = dt3_rating_get_stars();
-                $rating_title 	 = get_the_title();
-                $rating_name 	 = dt3_rating_get_field('dt3_rating_name');
-                $rating_time 	 = get_the_modified_time('d/m/Y');
-                $rating_positive = dt3_rating_get_field( 'dt3_rating_positive' );
-                $rating_negative = dt3_rating_get_field( 'dt3_rating_negative' );
-                $rating_recomendation =  dt3_rating_get_recommendation();
+                $rating_post_id       = get_the_ID();
+                $rating_stars 	      = Rating::get_stars($rating_post_id);
+                $rating_title 	      = get_the_title();
+                $rating_name 	        = Rating::get_field('dt3_rating_name', $rating_post_id);
+                $rating_time 	        = get_the_modified_time('d/m/Y');
+                $rating_positive      = Rating::get_field('dt3_rating_positive', $rating_post_id);
+                $rating_negative      = Rating::get_field('dt3_rating_negative', $rating_post_id);
+                $rating_recomendation = Rating::get_recommendation($rating_post_id);
 
                 $rating_string .= '<div class="comment-item" data-load="'. $ratings_loaded .'">';
                 $rating_string .= '<div class="comment-stars">'. $rating_stars .'</div>';
@@ -131,7 +133,7 @@ function dt3_load_rating () {
                 $rating_string .= '<h3>' . $rating_title . '</h3>';
                 $rating_string .= '</div>';
                 $rating_string .= '<div class="comment-user-date">';
-                $rating_string .= '<p>Por'. $rating_name .' em '. $rating_time . '</p>'; 
+                $rating_string .= '<p>Por'. $rating_name .' em '. $rating_time . '</p>';
                 $rating_string .= '</div>';
                 $rating_string .= '<div class="comment-positive-point">';
                 $rating_string .= '<p><span>Pontos positivos:</span>'. $rating_positive .'</p>';
@@ -159,7 +161,7 @@ function dt3_load_rating () {
 	// }
 }
 
-/* 
+/*
  * Hooks que passam a função para o wp_ajax
  */
 add_action('wp_ajax_dt3_load_rating', 'dt3_load_rating'); // Logged-in users
