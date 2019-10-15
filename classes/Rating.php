@@ -81,9 +81,9 @@ class Rating {
   /**
    * Mostra o template HTML da barra de avaliação.
    *
-   * @param string $rate Valor, entre 1 e 5, da avaliação
+   * @param float $rate Valor, entre 1 e 5, da avaliação
    */
-  function the_rate(string $rate): void {
+  public static function the_rate(float $rate): void {
     $rate = intval($rate);
 
     foreach(range(1, 5) as $rateIndex) {
