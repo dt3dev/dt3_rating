@@ -317,10 +317,10 @@ class Rating {
    * o cliente recomendaria o produto para
    * um amigo
    *
-   * @param string $post_id ID do post o qual se que mostrar o template.
+   * @param string $rating_id ID da avaliação a qual se que mostrar o template.
    */
-  public static function the_recommendation(string $post_id): void {
-      $rating_recommendations = self::get_field('dt3_rating_recomendations', $post_id);
+  public static function the_recommendation(string $rating_id): void {
+      $rating_recommendations = self::get_field('dt3_rating_recomendations', $rating_id);
 
       if ($rating_recommendations == 'yes') {
         echo '<img src="'. PLUGIN_URL .'/dt3-rating/images/circle-with-check-symbol.svg" alt="">';
