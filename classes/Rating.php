@@ -34,7 +34,7 @@ class Rating {
    * @param string $name Nome do campo buscado
    * @param string $post_id ID do post
    */
-  function the_field(string $post_id,string $name): void {
+  public static function the_field(string $post_id,string $name): void {
     $field_data = get_post_meta($post_id, $name, true);
     echo $field_data;
   }
