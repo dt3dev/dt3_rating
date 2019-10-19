@@ -22,7 +22,6 @@ Plugin::init();
 
 // Insert rating form in comments
 function dt3_rating_form() {
-	include_once 'template_functions.php';
 	include_once 'template.php';
 }
 add_action( 'wp_get_current_commenter', 'dt3_rating_form');

@@ -4,7 +4,6 @@ use DT3Rating\Rating;
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-include_once 'template_functions.php';
 
 // AJAX
 
