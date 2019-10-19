@@ -15,10 +15,12 @@ include_once 'define.php';
 use DT3Rating\Security;
 use DT3Rating\Panel;
 use DT3Rating\Plugin;
+use DT3Rating\Hooks;
 
 Security::denyDirectAccess();
 Panel::init();
 Plugin::init();
+Hooks::init();
 
 // Insert rating form in comments
 function dt3_rating_form() {
