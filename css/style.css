@@ -37,8 +37,8 @@
     font-weight: 500;
 }
 .average h2{
-    font-size: 6em;
-    padding: 0 0 0 20px;
+    font-size: 6em !important;
+    padding: 0 0 0 40px;
     font-weight: 600;
 }
 .stars{
@@ -142,7 +142,7 @@
     background-color: #fefefe;
 }
 .title-form{
-    width: 100%; 
+    width: 100%;
     margin: 0 auto;
     font-size: .8em;
 }
@@ -174,7 +174,7 @@
     flex-direction: column;
 }
 .form-error{
-    border: 2px solid red !important;  
+    border: 2px solid red !important;
 }
 .positive-input textarea,
 .improvement-input textarea{
@@ -236,7 +236,7 @@
     clip-path: polygon(49% 49%, 0% 100%, 100% 100%);
     -webkit-clip-path: polygon(49% 49%, 0% 100%, 100% 100%);
   }
-  
+
   .name-input .name-span span:before, .email-input .email-span span:before, .title-input .title-span span:before, .do-your-rate .recommendation-span span:before, .do-your-rate .stars-span span:before {
     content: '';
     background: #FBE5E5;
@@ -330,7 +330,7 @@ input::placeholder, textarea::placeholder{
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-  }  
+  }
   label.container{
       white-space: nowrap;
       word-wrap: unset
@@ -353,7 +353,7 @@ input::placeholder, textarea::placeholder{
   }
   .recommendations-radios-item .checkmark{
       top: -2px;
-  } 
+  }
   .recommendations-radios-item .container{
       padding-left: 60%;
       margin-top: 0;
@@ -624,12 +624,12 @@ input::placeholder, textarea::placeholder{
     width: 140px;
     height: 25px;
   }
-  
+
   .rating-by-stars > input {
     opacity: 0;
     margin-right: -100%;
   }
-  
+
   .rating-by-stars > label {
     position: relative;
     display: block;
@@ -638,7 +638,7 @@ input::placeholder, textarea::placeholder{
     background-size: 25px 25px;
     margin: 0 1px;
   }
-  
+
   .rating-by-stars > label:before {
     display: block;
     opacity: 0;
@@ -652,13 +652,13 @@ input::placeholder, textarea::placeholder{
     -o-transition: opacity 0.2s linear;
     transition: opacity 0.2s linear;
   }
-  
+
   .rating-by-stars > label:hover:before,
   .rating-by-stars > label:hover ~ label:before,
   .rating-by-stars:not(:hover) > :checked ~ label:before {
     opacity: 1;
   }
-  
+
   .primary-navigation .menu{
       padding-top: 0em;
   }

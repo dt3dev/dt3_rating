@@ -1,5 +1,5 @@
 // Ajusta a barra de porcentagem de cada avaliacao
-dt3PercentBar();	
+dt3PercentBar();
 
 // Dispara o listener do form
 dt3SubmitRating();
@@ -72,8 +72,8 @@ function validateEmail(email) {
 function dt3SubmitRating() {
 	const ratingStars2 = document.getElementsByClassName('rating-stars')
 	$( '.rating-submit' ).on( 'click', function() {
-		if ( token ) {
-			
+		if ( true ) {
+
 
 			let count = 0
 			let rating = {};
@@ -215,7 +215,7 @@ function dt3MoreRatings() {
 
 	var loaded = 0;
 	var loadData;
-	
+
 	$('.more-link').on( 'click', function() {
 		loaded 			= $('.comment-item').last().data('load');
 		product_post_id = $('.button-submit').data('post');
@@ -263,4 +263,3 @@ function dt3AjaxLoadMore( loadData ) {
         }
     });
 }
-
